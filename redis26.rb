@@ -59,4 +59,8 @@ class Redis26 < Formula
     </plist>
     EOS
   end
+
+  test do
+    system "#{bin}/redis-server", "--version"
+  end
 end
