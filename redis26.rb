@@ -1,9 +1,8 @@
-require 'formula'
 
 class Redis26 < Formula
-  homepage 'http://redis.io/'
-  url 'https://redis.googlecode.com/files/redis-2.6.14.tar.gz'
-  sha1 'f56a5d4891e94ebd89f7e63c3e9151d1106dedd5'
+  homepage "http://redis.io/"
+  url "https://redis.googlecode.com/files/redis-2.6.14.tar.gz"
+  sha1 "f56a5d4891e94ebd89f7e63c3e9151d1106dedd5"
 
   fails_with :llvm do
     build 2334
@@ -11,11 +10,11 @@ class Redis26 < Formula
   end
 
   def install
-    # Architecture isn't detected correctly on 32bit Snow Leopard without help
+    # Architecture isn"t detected correctly on 32bit Snow Leopard without help
     ENV["OBJARCH"] = MacOS.prefer_64_bit? ? "-arch x86_64" : "-arch i386"
 
     # Head and stable have different code layouts
-    src = (buildpath/'src/Makefile').exist? ? buildpath/'src' : buildpath
+    src = (buildpath/"src/Makefile").exist? ? buildpath/"src" : buildpath
     system "make", "-C", src, "CC=#{ENV.cc}"
 
     %w[benchmark cli server check-dump check-aof].each { |p| bin.install src/"redis-#{p}" }
@@ -28,7 +27,7 @@ class Redis26 < Formula
       s.gsub! "\# bind 127.0.0.1", "bind 127.0.0.1"
     end
 
-    etc.install 'redis.conf' unless (etc/'redis.conf').exist?
+    etc.install "redis.conf" unless (etc/"redis.conf").exist?
   end
 
   plist_options :manual => "redis-server #{HOMEBREW_PREFIX}/etc/redis.conf"
